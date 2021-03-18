@@ -5,8 +5,8 @@ let envoyer = document.querySelector('#envoyer');
 
 function send(){
         let user_id =  document.getElementById("user_id");
-       let product_id = document.getElementById("product_id");
-       let message = document.getElementById("commentaire");
+        let product_id = document.getElementById("product_id");
+        let message = document.getElementById("commentaire");
 
         formData = new FormData()
         formData.append('user_id', user_id.value)
@@ -21,6 +21,14 @@ function send(){
             method: "post",
             body: formData,
         }).then((response)=>{
+            message.value="";
             return response.text();
         })
 }
+
+
+//  document.querySelector('#envoyer').addEventListener("click", refresh);
+
+//     function refresh(){
+//     $('#refresh').load(document.URL + '#refresh');
+// }

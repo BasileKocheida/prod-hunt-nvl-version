@@ -5,7 +5,7 @@ if (isset($_POST['product_id'])) :
     $productStatement =  $pdo->prepare('SELECT * FROM product WHERE id = ?');
     $productStatement->execute([$_POST['product_id']]);
     $product = $productStatement->fetch();
-    $idProduct= $product['id'];
+    $idproduct= $product['id'];
     //commentaires 
     
     
@@ -13,7 +13,7 @@ if (isset($_POST['product_id'])) :
     JOIN user ON commentaires.user_id = user.id WHERE product_id = ?');
     $commentaireStatement->execute([$_POST['product_id']]);
     $result = $commentaireStatement->fetchAll();
-    // foreach($result as $commentaire) :?>
+    ?>
 
     <div class="popup-header">
         <div class="card mb-3 modal-content" >
@@ -26,18 +26,19 @@ if (isset($_POST['product_id'])) :
                         <h5 class="card-title">"<?=$product['name-product']?>"</h5>
                         <p class="card-text"><?=$product['descriptif']?> </p>
                         <p class="card-text"><?=$product['categories']?> </p>
-                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2">
                 </div>
             </div> 
          </div>  
     </div>
 
     <div class="popup-body">
-        <h1>CAROUSSEL</h1>
 
         <?php 
         $getImage = $pdo->prepare('SELECT * FROM images WHERE product_id = ?');
-        $getImage->execute([$idProduct]);
+        $getImage->execute([$idproduct]);
         $img = $getImage->fetch(); ?>
                
                <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
@@ -67,19 +68,38 @@ if (isset($_POST['product_id'])) :
                     </button>
             </div>
     </div>
-            <div class="popup-footer">
-                <?php foreach($result as $commentaire) :?>
+            <div class="popup-footer" id='refresh'>
+            <h5>Espace commentaires</h5><br>
+                <?php 
+
+                $dateCommentaireStatement = $pdo->prepare('SELECT * FROM commentaires');
+                $dateCommentaireStatement->execute();
+                $date = $dateCommentaireStatement->fetch();
+
+                $dateParts= explode("-", $date["created_at"]);
+                $dateFormatted = $dateParts[2]. "/".$dateParts[1]. "/" .$dateParts[0];
+
+                foreach($result as $commentaire) :?>
                     <div class="commentaires" >
-                        <p class="nickname"> <?=$commentaire['nickname']?> </p>
+                        <p class="nickname"><b> <?=$commentaire['nickname']?> </b> Post : <?= $dateFormatted ?></p>
                         <p class="commentaire"> <?=$commentaire['text_commentaire']?></p>
+                        
                     </div>
                 <?php  endforeach;?>
+
+
+                
+                    <div class='nblike' id='<?=$product['id']?>'>
+                        <p>Nombre de likes : </p> <?php include 'recuperation-donnees/count_up.php' ?>
+                    </div>
+                
+
 
                 <input id= "product_id" value="<?=$_POST['product_id']?>" type="hidden">
                 <input id= "user_id" value="<?=$_SESSION['id']?>" type="hidden">
                 <textarea name="commentaires" id="commentaire" placeholder="votre commentaire..."> </textarea>
                 <button type="submit" class="btn btn-primary" id='envoyer' onclick="send();">Envoyer</button>
-                <button class="btn-close" data-dismiss-popup></button>
+                
             </div>
         </div>
     </div>

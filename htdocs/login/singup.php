@@ -25,7 +25,9 @@ if(!empty($_GET['success'])){
 ?>
 <div class = "flex-container">
 <div class='presentation'>
-   <p> product hunt </p>
+    <h2>Product hunt</h2>
+   <p> Avec Product-hunt, explore de nouveaux horizons, découvre et teste de nouveaux logiciels et applications,
+       notes les et partage les avec tes amis! </p>
 </div>
  <div class='ingreser'>
  <form action='/recuperation-donnees/singup.php' id='form' method="POST">
@@ -39,7 +41,7 @@ if(!empty($_GET['success'])){
                 <label class='password' for='password2' >Confirmation du mot de passe</label>
                 <input type='password' id='password2' class='form-control' name='password2' required>
 
-                <button class='btn btn-success' id='login'>S'inscrire </button> 
+                <button class='btn btn-danger' id='login'>S'inscrire </button> 
 </form> 
 </div>
 </div>     
